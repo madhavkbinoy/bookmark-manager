@@ -1,0 +1,53 @@
+<div class="content-header">
+  <h2 class="folder-title">{{ folder().name }}</h2>
+  <!-- How many bookmarks are in this folder -->
+  <span class="count">{{ bookmarks().length }}</span>
+</div>
+
+<!-- Form to add a new bookmark to this folder -->
+<div class="form-row">
+  <input [(ngModel)]="newTitle" placeholder="Title" />
+  <input [(ngModel)]="newUrl" placeholder="https://..." />
+  <button class="btn-primary" (click)="addBookmark()">＋ Add bookmark</button>
+</div>
+
+<!-- Django's error messages, one per field (only shown if that field had an error) -->
+@if (errors().title) {
+  <p class="error">Title: {{ errors().title }}</p>
+}
+@if (errors().url) {
+  <p class="error">URL: {{ errors().url }}</p>
+}
+
+<ul class="bookmark-list">
+  <!-- One <li> per bookmark in this folder -->
+  @for (bookmark of bookmarks(); track bookmark.id) {
+    <li class="bookmark">
+      @if (editingId() === bookmark.id) {
+        <!-- This bookmark is being edited: the row turns into text boxes -->
+        <input [(ngModel)]="editTitle" placeholder="Title" />
+        <input [(ngModel)]="editUrl" placeholder="https://..." />
+        <button class="btn-primary" (click)="saveEdit(bookmark)">Save</button>
+        <button class="btn-ghost" (click)="cancelEdit()">Cancel</button>
+        @if (editErrors().title) {
+          <p class="error">Title: {{ editErrors().title }}</p>
+        }
+        @if (editErrors().url) {
+          <p class="error">URL: {{ editErrors().url }}</p>
+        }
+      } @else {
+        <!-- A coloured circle with the first letter of the title -->
+        <div class="avatar">{{ bookmark.title[0] }}</div>
+        <!-- Normal view. target="_blank" opens the link in a new tab -->
+        <a class="bookmark-link" [href]="bookmark.url" target="_blank" rel="noopener">
+          <span class="bookmark-title">{{ bookmark.title }}</span>
+          <span class="bookmark-url">{{ bookmark.url }}</span>
+        </a>
+        <button class="btn-ghost" (click)="startEdit(bookmark)">Edit</button>
+        <button class="btn-danger" (click)="deleteBookmark(bookmark)">Delete</button>
+      }
+    </li>
+  } @empty {
+    <li class="empty-row">No bookmarks here yet. Add your first one above ✨</li>
+  }
+</ul>

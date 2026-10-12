@@ -1,0 +1,21 @@
+# Files that should NOT be uploaded to GitHub.
+# (Everything here can be re-created on any machine.)
+
+# ---------- Backend (Python / Django) ----------
+# The virtual environment: re-create with `python -m venv venv` + `pip install -r requirements.txt`
+backend/venv/
+# Python's compiled-file cache
+__pycache__/
+*.pyc
+# The local database: re-create with `python manage.py migrate`
+backend/db.sqlite3
+
+# ---------- Frontend (Angular) ----------
+# npm packages: re-create with `npm install`
+# (frontend/.gitignore also covers these)
+frontend/node_modules/
+# Angular's build cache
+frontend/.angular/
+
+# ---------- System files ----------
+.DS_Store

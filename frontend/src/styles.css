@@ -1,0 +1,430 @@
+/* =========================================================
+   All the app's CSS lives in this one file, to keep things simple.
+   Theme: dark "aurora" background + frosted-glass cards.
+   ========================================================= */
+
+/* ---------- Colours, kept in one place (CSS variables) ---------- */
+:root {
+  --bg: #0b0d1a;                          /* page background (very dark blue) */
+  --card: rgba(255, 255, 255, 0.06);      /* see-through white for the glass cards */
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text: #eef0ff;                        /* main text */
+  --muted: #9aa0c3;                       /* secondary text */
+  --accent-1: #7c5cff;                    /* purple */
+  --accent-2: #00d4ff;                    /* cyan */
+  --accent-3: #ff5ca8;                    /* pink */
+  --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  --danger: #ff5c7a;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box; /* width includes padding: makes sizing predictable */
+}
+
+/* ---------- The whole page ---------- */
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 40px 24px;
+  font-family: 'Inter', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ---------- Floating coloured blobs behind everything ---------- */
+.blob {
+  position: fixed;
+  z-index: -1;            /* behind the content */
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  filter: blur(110px);    /* blur turns a circle into a soft glow */
+  opacity: 0.45;
+  animation: float 18s ease-in-out infinite alternate;
+}
+.blob-1 { background: var(--accent-1); top: -140px; left: -120px; }
+.blob-2 { background: var(--accent-2); bottom: -180px; right: -100px; animation-delay: -6s; }
+.blob-3 { background: var(--accent-3); top: 35%; left: 45%; width: 340px; height: 340px; opacity: 0.25; animation-delay: -12s; }
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(80px, 60px) scale(1.15); }
+}
+
+/* ---------- Header ---------- */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto 32px;
+  animation: fadeUp 0.6s ease both;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  font-size: 28px;
+  border-radius: 16px;
+  background: var(--gradient);
+  box-shadow: 0 10px 30px rgba(124, 92, 255, 0.5);
+}
+
+h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  /* gradient-coloured text */
+  background: linear-gradient(90deg, #fff, #c9c2ff 50%, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tagline {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+h2 {
+  margin: 0;
+}
+
+/* ---------- Two-column layout ---------- */
+.layout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Frosted-glass card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  backdrop-filter: blur(20px);           /* blurs whatever is behind the card */
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  animation: fadeUp 0.6s ease both;
+}
+
+.sidebar {
+  width: 360px;
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-height: 420px;
+  animation-delay: 0.1s;
+}
+
+/* On narrow screens (phones), stack the two cards */
+@media (max-width: 800px) {
+  .layout { flex-direction: column; }
+  .sidebar { width: 100%; }
+}
+
+/* ---------- Section titles ---------- */
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.folder-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Little pill showing the number of bookmarks */
+.count {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--gradient);
+}
+
+/* ---------- Forms ---------- */
+.form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.form-row input {
+  flex: 1;
+  min-width: 140px;
+}
+
+input {
+  padding: 11px 14px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input::placeholder {
+  color: #6f7499;
+}
+
+/* Glow when you click into a text box */
+input:focus {
+  border-color: var(--accent-1);
+  box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.25);
+}
+
+/* ---------- Buttons ---------- */
+button {
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s, opacity 0.2s;
+}
+
+button:active {
+  transform: scale(0.96); /* tiny "press" effect */
+}
+
+/* Main action: gradient */
+.btn-primary {
+  color: white;
+  background: var(--gradient);
+  box-shadow: 0 6px 20px rgba(124, 92, 255, 0.4);
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(0, 212, 255, 0.45);
+}
+
+/* Quiet action: see-through */
+.btn-ghost {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--card-border);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Dangerous action: red */
+.btn-danger {
+  color: var(--danger);
+  background: rgba(255, 92, 122, 0.1);
+  border-color: rgba(255, 92, 122, 0.3);
+}
+.btn-danger:hover {
+  color: white;
+  background: var(--danger);
+}
+
+/* ---------- Lists ---------- */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  animation: fadeUp 0.35s ease both; /* each row slides in */
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+/* Edit / Delete buttons stay faint until you hover the row */
+li .btn-ghost,
+li .btn-danger {
+  padding: 6px 12px;
+  font-size: 13px;
+  opacity: 0.35;
+}
+li:hover .btn-ghost,
+li:hover .btn-danger {
+  opacity: 1;
+}
+
+/* ---------- Folder rows ---------- */
+.folder:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.folder-name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.folder-icon {
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+.folder:hover .folder-icon {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+/* The selected folder: glowing gradient border */
+.folder.selected {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.25), rgba(0, 212, 255, 0.12));
+  border-color: rgba(124, 92, 255, 0.6);
+  box-shadow: 0 0 24px rgba(124, 92, 255, 0.25);
+}
+.folder.selected .folder-name {
+  font-weight: 700;
+}
+
+/* ---------- Bookmark rows ---------- */
+.bookmark {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--card-border);
+}
+.bookmark:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Circle with the first letter of the title */
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--accent-3), var(--accent-1));
+}
+
+.bookmark-link {
+  flex: 1;
+  min-width: 0; /* lets long URLs shrink instead of overflowing */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-decoration: none;
+}
+
+.bookmark-title {
+  color: var(--text);
+  font-weight: 600;
+}
+.bookmark-link:hover .bookmark-title {
+  color: var(--accent-2);
+}
+
+.bookmark-url {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* long URLs end with "..." */
+}
+
+/* ---------- Messages ---------- */
+.error {
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #ffd0d8;
+  background: rgba(255, 92, 122, 0.12);
+  border: 1px solid rgba(255, 92, 122, 0.35);
+  border-radius: 10px;
+  animation: shake 0.4s ease; /* small shake to catch your eye */
+}
+
+.empty-row {
+  justify-content: center;
+  padding: 28px;
+  color: var(--muted);
+  border: 1px dashed var(--card-border);
+}
+
+/* Shown on the right before any folder is picked */
+.empty-state {
+  height: 100%;
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--muted);
+}
+.empty-state h2 {
+  color: var(--text);
+  margin-top: 12px;
+}
+.empty-icon {
+  font-size: 64px;
+  animation: bob 3s ease-in-out infinite;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* Respect people who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

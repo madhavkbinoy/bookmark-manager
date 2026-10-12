@@ -1,0 +1,36 @@
+<h2 class="section-title">Folders</h2>
+
+<!-- Form to add a new folder -->
+<div class="form-row">
+  <input [(ngModel)]="newName" placeholder="New folder name" />
+  <button class="btn-primary" (click)="addFolder()">＋ Add</button>
+</div>
+
+<!-- Only shown when there is an error -->
+@if (error()) {
+  <p class="error">{{ error() }}</p>
+}
+
+<ul class="folder-list">
+  <!-- Repeat this <li> once for every folder in the list -->
+  @for (folder of folders(); track folder.id) {
+    <!-- [class.selected] adds the CSS class "selected" only to the chosen folder -->
+    <li class="folder" [class.selected]="folder.id === selectedId()">
+      @if (editingId() === folder.id) {
+        <!-- This folder is being renamed: show a text box -->
+        <input [(ngModel)]="editName" />
+        <button class="btn-primary" (click)="saveRename(folder)">Save</button>
+        <button class="btn-ghost" (click)="cancelRename()">Cancel</button>
+      } @else {
+        <!-- Normal view: the name (click it to select the folder) and buttons -->
+        <span class="folder-name" (click)="selectFolder(folder)">
+          <span class="folder-icon">📁</span>{{ folder.name }}
+        </span>
+        <button class="btn-ghost" (click)="startRename(folder)">Rename</button>
+        <button class="btn-danger" (click)="deleteFolder(folder)">Delete</button>
+      }
+    </li>
+  } @empty {
+    <li class="empty-row">No folders yet. Add one above ☝️</li>
+  }
+</ul>

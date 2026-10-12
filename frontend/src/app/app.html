@@ -1,0 +1,40 @@
+<!-- Soft coloured blobs that float in the background (pure decoration) -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<header class="hero">
+  <div class="logo">🔖</div>
+  <div>
+    <h1>Bookmark Manager</h1>
+    <p class="tagline">Angular&nbsp;+&nbsp;Django REST Framework</p>
+  </div>
+</header>
+
+<!-- Two columns: folders on the left, bookmarks on the right -->
+<div class="layout">
+
+  <aside class="card sidebar">
+    <!-- The folder sidebar.
+         [selectedId]     sends data DOWN into the component (which folder is selected)
+         (folderSelected) listens for events coming UP from it ($event = the folder that was clicked) -->
+    <app-folder-list
+      [selectedId]="selectedFolder()?.id"
+      (folderSelected)="selectedFolder.set($event)"
+    />
+  </aside>
+
+  <main class="card content">
+    <!-- The bookmark list: only shown once a folder is selected -->
+    @if (selectedFolder(); as folder) {
+      <app-bookmark-list [folder]="folder" />
+    } @else {
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h2>Pick a folder</h2>
+        <p>Choose a folder on the left to see its bookmarks.</p>
+      </div>
+    }
+  </main>
+
+</div>
