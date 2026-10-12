@@ -19,3 +19,6 @@ frontend/.angular/
 
 # ---------- System files ----------
 .DS_Store
+
+# ---------- Personal notes (kept on this computer only) ----------
+LEARNING_GUIDE.md
